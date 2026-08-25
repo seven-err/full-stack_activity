@@ -98,8 +98,6 @@ class ProductController extends Controller
 
         $validated = $this->validateProduct($request, $product->id);
 
-        unset($validated['sku']);
-
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
             $validated['image'] = $this->storeImage($request);
