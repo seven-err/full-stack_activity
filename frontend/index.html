@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockPilot — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="app-layout">
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+  <!-- ============ Sidebar ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+      </span>
+      <span class="brand-name">StockPilot</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <p class="nav-section">Overview</p>
+      <a href="index.html" class="nav-item active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        Dashboard
+      </a>
+      <a href="products.html" class="nav-item" data-page="products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+        Products
+      </a>
+
+      <p class="nav-section">Categories</p>
+      <div class="nav-categories" id="navCategories">
+        <div class="nav-skeleton-group"><span></span><span></span><span></span><span></span></div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <span class="avatar">CV</span>
+        <div class="user-meta">
+          <span class="user-name">Christian Vence</span>
+          <span class="user-role">Inventory Manager</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ Main area ============ -->
+  <div class="main-wrapper">
+
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+      <div class="page-heading">
+        <h1>Dashboard</h1>
+        <p>Monitor your inventory at a glance</p>
+      </div>
+      <div class="topbar-actions">
+        <a href="products.html?action=new" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          Add Product
+        </a>
+        <span class="avatar avatar-ring">CV</span>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- Stat cards -->
+      <section class="stats-grid" id="statsGrid" aria-label="Inventory summary">
+        <!-- skeleton -->
+        <div class="stat-card sk-card"></div>
+        <div class="stat-card sk-card"></div>
+        <div class="stat-card sk-card"></div>
+        <div class="stat-card sk-card"></div>
+        <div class="stat-card sk-card"></div>
+      </section>
+
+      <div id="dashError" class="alert alert-error" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <div>
+          <strong>Unable to load dashboard.</strong>
+          <p>Please check that the API server is running and try again.</p>
+          <button class="btn btn-outline btn-sm" id="retryDashboard">Retry</button>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <section class="grid-2 charts-row">
+        <article class="card">
+          <header class="card-header">
+            <h2>Stock Status Distribution</h2>
+            <p>Share of products by availability</p>
+          </header>
+          <div class="donut-wrap" id="statusDonutWrap">
+            <div class="donut-loading sk-card"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <header class="card-header">
+            <h2>Products by Category</h2>
+            <p>Distribution across catalog</p>
+          </header>
+          <div class="category-bars" id="categoryBars">
+            <div class="sk-bar"></div>
+            <div class="sk-bar"></div>
+            <div class="sk-bar"></div>
+            <div class="sk-bar"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Lists row -->
+      <section class="grid-2 lists-row">
+        <article class="card">
+          <header class="card-header card-header-row">
+            <div>
+              <h2>Recent Products</h2>
+              <p>Latest additions to inventory</p>
+            </div>
+            <a class="btn btn-ghost btn-sm" href="products.html?sort_by=created_at&sort_dir=desc">View all</a>
+          </header>
+          <ul class="item-list" id="recentList">
+            <li class="sk-list-item"></li>
+            <li class="sk-list-item"></li>
+            <li class="sk-list-item"></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <header class="card-header card-header-row">
+            <div>
+              <h2>Low Stock Alerts</h2>
+              <p>Items at or below minimum level</p>
+            </div>
+            <a class="btn btn-ghost btn-sm" href="products.html?status=low_stock">Review</a>
+          </header>
+          <ul class="item-list" id="lowStockList">
+            <li class="sk-list-item"></li>
+            <li class="sk-list-item"></li>
+            <li class="sk-list-item"></li>
+          </ul>
+        </article>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
