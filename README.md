@@ -1,9 +1,3 @@
-# Presenter's Guide: Product List Management Module
-
-*This guide breaks down your project into simple talking points. Use these notes to easily explain your project to your audience without reading from a strict script.*
-
----
-
 ## 1. The Purpose (Why did we build this?)
 **The Goal:** To build a functional web page that lets a user manage a list of products.
 **What it proves:** 
